@@ -1,0 +1,2 @@
+g++ -I 3rd_party/imgui/ src/main.cpp src/ImGui_SDK_helper.cpp 3rd_party/imgui/imgui*.cpp -lallegro -lallegro_main -lallegro_primitives -o bin/OTU
+./bin/OTU

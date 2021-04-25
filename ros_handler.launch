@@ -1,0 +1,3 @@
+<node pkg="OTU" type="OTU" name="OTU_DEMO_APP">
+    <param name="cmd" value="make_run"/>
+</node>
