@@ -8,6 +8,11 @@
 #include "imgui.h"
 #include "ImGui_SDK_helper.h"
 
+int startROS(char *f)
+{
+	return 1;
+}
+
 int main(int, char**)
 {
     // Setup Allegro
@@ -99,11 +104,16 @@ int main(int, char**)
             ImGui::Text("This is a demo applicaion, not intended for production.");               // Display some text (you can use a format strings too)
             ImGui::Checkbox("Start Data collection (foreground, realtime)", &show_another_window);
 
-            ImGui::InputText("Data Path: ", f, MAX_LEN);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::Checkbox("Cler collected", &clrData); // Edit 3 floats representing a color
+            ImGui::InputText("ROS Launch File Path: ", f, MAX_LEN);            // Edit 1 float using a slider from 0.0f to 1.0f
+            ImGui::Checkbox("Clear collected", &clrData); // Edit 3 floats representing a color
 
-            if (ImGui::Button("Set Path as entered"))                         // Buttons return true when clicked (most widgets return true when edited/activated)
-                curr_path = f;
+            if (ImGui::Button("Start ROS Sensors")){                         // Buttons return true when clicked (most widgets return true when edited/activated)
+                int rc  = startROS(f);
+		if (rc == 1)
+			ImGui::Begin("FAILED [Invalid Path]", &rc);
+		else
+			ImGui::Begin("DONE", &rc);
+	    }
             ImGui::SameLine();
             ImGui::Text("Current Count = %d", counter);
 
