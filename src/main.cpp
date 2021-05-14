@@ -108,8 +108,8 @@ int main(int, char**)
             ImGui::Checkbox("Clear collected", &clrData); // Edit 3 floats representing a color
 
             if (ImGui::Button("Start ROS Sensors")){                         // Buttons return true when clicked (most widgets return true when edited/activated)
-                int rc  = startROS(f);
-		if (rc == 1)
+                bool rc  = startROS(f);
+		if (rc)
 			ImGui::Begin("FAILED [Invalid Path]", &rc);
 		else
 			ImGui::Begin("DONE", &rc);
