@@ -3,14 +3,45 @@
 // Read online: https://github.com/ocornut/imgui/tree/master/docs
 
 #include <stdint.h>
+#include <stdio.h>
+#include <iostream>
+#include <string.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include "imgui.h"
 #include "ImGui_SDK_helper.h"
+#include <sys/stat.h>
+#include <unistd.h>
+#include <string>
+#include <fstream>
+#define MAX_LEN 256
 
-int startROS(char *f)
+inline bool file_check (const std::string& name) {
+  struct stat buffer;
+  return (stat (name.c_str(), &buffer) == 0);
+}
+
+bool startROS(char *f, char *p)
 {
-	return 1;
+    char buffer[1025] = "";
+    snprintf ( buffer, 1025, "roslaunch %s %s", p, f );  
+	std::cout << "[DBG] ROS COMMAND buffer: "<< buffer << std::endl;
+    bool file_stat = file_check(f);
+    int status = system(buffer);
+    
+    if (!file_stat){
+        std::cout << "[DBG] [File Absent] Error: " << strerror(errno) << '\n';
+        return false;
+    }
+    
+    else
+    {
+        if (WIFEXITED(status))
+            std::cout << "[DBG] ROS COMMAND SUCCESSFUL, exit code " << WEXITSTATUS(status) << '\n';
+        else
+            std::cout << "[DBG] ROS COMMAND EXIT abnormal\n";
+        return true;
+    }
 }
 
 int main(int, char**)
@@ -58,7 +89,12 @@ int main(int, char**)
 
     bool show_demo_window = false;
     bool show_another_window = false;
+    bool ros_fail = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+            char f[MAX_LEN] = "";
+            char p[MAX_LEN] = "";
+            static int counter = 0;
+
 
     // Main loop
     bool running = true;
@@ -95,34 +131,35 @@ int main(int, char**)
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
         {
-#define MAX_LEN 256
-            char f[MAX_LEN];
-            static int counter = 0;
 
-            ImGui::Begin("ODOT Project [DEMO APP]");                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("ODOT Project [ROS SENSOR SPAWN]");                          // Create a window called "Hello, world!" and append into it.
 
-            ImGui::Text("This is a demo applicaion, not intended for production.");               // Display some text (you can use a format strings too)
+            ImGui::Text("Current feature set in this release: Sensor spawning [roslaunch exec.]");               // Display some text (you can use a format strings too)
             ImGui::Checkbox("Start Data collection (foreground, realtime)", &show_another_window);
 
-            ImGui::InputText("ROS Launch File Path: ", f, MAX_LEN);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::Checkbox("Clear collected", &clrData); // Edit 3 floats representing a color
-
+            ImGui::InputText("<- ROS Launch File Path", f, MAX_LEN-1);   
+            ImGui::InputText("<- ROS Package Name", p, MAX_LEN-1);
+            ImGui::Checkbox("Clear collected", &clrData); 
             if (ImGui::Button("Start ROS Sensors")){                         // Buttons return true when clicked (most widgets return true when edited/activated)
-                bool rc  = startROS(f);
-		
+                ros_fail = !startROS(f,p);
+	/*	
 		if (rc)
 		{
 			ImGui::Begin("FAILED", &rc);
 			ImGui::Text("Invalid Path");
-			if (ImGui::Button("OK")
-				rc = 0;
+			if (ImGui::Button("OK")){
+                rc = true;
+            }
 			ImGui::End();
 		}
 		
 		else
 		{
 			ImGui::Begin("DONE", &rc);
+            ImGui::End();
+
 		}
+    */
 	    }
             ImGui::SameLine();
             ImGui::Text("Current Count = %d", counter);
@@ -136,21 +173,36 @@ int main(int, char**)
         }
         bool rc = true;
         // 3. Show another simple window.
-        if (show_another_window)
+        if (ros_fail)
         {
-            ImGui::Begin("Start Date Collection", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            ImGui::Begin("FAILED", &ros_fail);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
             
-            ImGui::Text("Collecting..");
+            ImGui::Text("Path or Package name issue, please try again.");
             
             int bit1 = 2;//readData();
             rc = true;//writeData(); //return true upon write successful
  
-            if (ImGui::Button("Stop")){
+            if (ImGui::Button("Ok")){
+                ros_fail = false;
+            }
+            ImGui::End();
+        }
+
+        if (show_another_window)
+        {
+            ImGui::Begin("Collection Status", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            
+            ImGui::Text("Collecting to ./tmp/");
+            
+            int bit1 = 2;//readData();
+            rc = true;//writeData(); //return true upon write successful
+ 
+            if (ImGui::Button("Ok")){
                 show_another_window = false;
             }
             ImGui::End();
         }
-                
+                   
         // Rendering
         ImGui::Render();
         al_clear_to_color(al_map_rgba_f(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w));
