@@ -109,10 +109,20 @@ int main(int, char**)
 
             if (ImGui::Button("Start ROS Sensors")){                         // Buttons return true when clicked (most widgets return true when edited/activated)
                 bool rc  = startROS(f);
+		
 		if (rc)
-			ImGui::Begin("FAILED [Invalid Path]", &rc);
+		{
+			ImGui::Begin("FAILED", &rc);
+			ImGui::Text("Invalid Path");
+			if (ImGui::Button("OK")
+				rc = 0;
+			ImGui::End();
+		}
+		
 		else
+		{
 			ImGui::Begin("DONE", &rc);
+		}
 	    }
             ImGui::SameLine();
             ImGui::Text("Current Count = %d", counter);
