@@ -90,6 +90,7 @@ int main(int, char**)
     bool show_demo_window = false;
     bool show_another_window = false;
     bool ros_fail = false;
+    bool ros_running = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
             char f[MAX_LEN] = "";
             char p[MAX_LEN] = "";
@@ -142,6 +143,7 @@ int main(int, char**)
             ImGui::Checkbox("Clear collected", &clrData); 
             if (ImGui::Button("Start ROS Sensors")){                         // Buttons return true when clicked (most widgets return true when edited/activated)
                 ros_fail = !startROS(f,p);
+                ros_running = startROS(f,p);
 	/*	
 		if (rc)
 		{
@@ -187,7 +189,22 @@ int main(int, char**)
             }
             ImGui::End();
         }
-
+        if (ros_running)
+        {
+            ImGui::Begin("Sensors Spawned", &ros_running);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            
+            ImGui::Text("Press STOP to stop");
+            
+            int bit1 = 2;//readData();
+            rc = true;//writeData(); //return true upon write successful
+ 
+            if (ImGui::Button("STOP")){
+                system("rosnode kill -a");
+                ros_fail = false;
+                ros_running = false;
+            }
+            ImGui::End();
+        }
         if (show_another_window)
         {
             ImGui::Begin("Collection Status", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
