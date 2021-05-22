@@ -94,9 +94,10 @@ int main(int, char**)
     bool ros_bag_needed = false;
     bool ros_bag_started = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-            char f[MAX_LEN] = "";
-            char p[MAX_LEN] = "";
-            static int counter = 0;
+    char f[MAX_LEN] = "";
+    char p[MAX_LEN] = "";
+    static int counter = 0;
+    char ros_bag_name[MAX_LEN] = "";
 
 
     // Main loop
@@ -188,14 +189,23 @@ int main(int, char**)
 	    	system ("cd bags; mv latest/* older/.; cd latest; rosbag record -a &");
 	    	ros_bag_started = true;
 	    }
-	    if (ros_bag_started && ros_bag_needed)
-	    	ImGui::Text("Current data is being bagged at: OTU/bags/latest");
-            ImGui::Text("Press STOP to stop");
-            
+            if (ros_bag_started && ros_bag_needed)
+            {
+                ImGui::Text("Current data is being bagged at: OTU/bags/latest");
+                ImGui::Text(
+                "Press STOP to stop, enter name and/or path for file below, \n if left unspecified it will be saved in the latest directrory till next bag appears."
+                );
+            }
+
             int bit1 = 2;//readData();
             rc = true;//writeData(); //return true upon write successful
- 
+            ImGui::InputText("<- ROS Launch File path and/or name", ros_bag_name, MAX_LEN-1);  
             if (ImGui::Button("STOP")){
+                if (ros_bag_name != ""){
+                    char buffer[MAX_LEN];
+                    snprintf ( buffer, 1025, "mv bags/latest/* %s", ros_bag_name);
+                    system(buffer);
+                }
                 system("rosnode kill -a");
                 ros_fail = false;
                 ros_running = false;
