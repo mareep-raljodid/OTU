@@ -91,7 +91,7 @@ int main(int, char**)
     bool show_another_window = false;
     bool ros_fail = false;
     bool ros_running = false;
-    bool ros_bag = false;
+    bool ros_bag_needed = false;
     bool ros_bag_started = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
             char f[MAX_LEN] = "";
@@ -143,16 +143,17 @@ int main(int, char**)
             ImGui::InputText("<- ROS Launch File Path", f, MAX_LEN-1);   
             ImGui::InputText("<- ROS Package Name", p, MAX_LEN-1);
             ImGui::Checkbox("Clear collected", &clrData); 
-            if (ImGui::Button("Start ROS Sensors")){                         // Buttons return true when clicked (most widgets return true when edited/activated)
+            
+	    if (ImGui::Button("Start ROS Sensors")){                         // Buttons return true when clicked (most widgets return true when edited/activated)
                 ros_fail = !startROS(f,p);
                 ros_running = startROS(f,p);
+		ros_bag_needed = false;
 	    }
 	    
 	    if (ImGui::Button("Start ROS Sensors and Bag logs")){                         // Buttons return true when clicked (most widgets return true when edited/activated)
                 ros_fail = !startROS(f,p);
-                ros_running = !ros_fail;
-		if (ros_running)
-			ros_bag = true;
+                ros_running = startROS(f,p);
+		ros_bag_needed = true;
 	    }
             ImGui::SameLine();
             ImGui::Text("Current Count = %d", counter);
@@ -182,13 +183,13 @@ int main(int, char**)
         }
         if (ros_running)
         {
-            ImGui::Begin("Sensors Spawned", &ros_running);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            if (ros_bag && !ros_bag_started) {
-		    system ("cd bags; mv latest/* older/*");
-		    system ("cd bags/latest; rosbag record -a");
-		    ros_bag_started = true;
-		    ImGui::Text("Current data is being bagged at: OTU/bags/latest");
+            ImGui::Begin("Sensors Spawned and bagging data", &ros_running);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+	    if (!ros_bag_started && ros_bag_needed){
+	    	system ("cd bags; mv latest/* older/.; cd latest; rosbag record -a &");
+	    	ros_bag_started = true;
 	    }
+	    if (ros_bag_started && ros_bag_needed)
+	    	ImGui::Text("Current data is being bagged at: OTU/bags/latest");
             ImGui::Text("Press STOP to stop");
             
             int bit1 = 2;//readData();
