@@ -1,0 +1,10 @@
+<launch>
+	<include file="$(find astra_camera)/launch/astra.launch" />
+	<include file="$(find testing)/launch/odot_testing.launch" />
+	<include file="$(find livox_ros_driver)/launch/livox_lidar_rviz.launch" />
+	<include file="$(find piksi_multi_rtk_ros)/launch/piksi_multi_rover.launch" />
+	<node type="rviz" name="rviz_velodyne" pkg="rviz" args="-d $(find testing)/launch/velodyne.rviz" />
+
+	<node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen"> <remap from="image" to="/camera/rgb/image_raw" /> 
+	</node>
+</launch>

@@ -1,0 +1,390 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Sensor Options -->
+
+  <!--CAN-->
+  <arg name="use_socketcan" default="false"/>
+ 
+  <!--Radars-->
+  <arg name="use_esr_can" default="false" />
+  <arg name="use_esr_eth" default="false" />
+  <arg name="use_fl_srr" default="false" />
+  <arg name="use_fr_srr" default="false" />
+  <arg name="use_rl_srr" default="false" />
+  <arg name="use_rr_srr" default="false" />
+  <!--Mobileye-->
+  <arg name="use_mobileye" default="false" />
+
+  <!--LiDARs-->
+  <arg name="use_vlp32_1" default="true" />
+
+  <!--GPS-->
+  <arg name="use_novatel" default="true" />
+
+  <!--Cameras-->
+  <arg name="use_mako_1" default="false" />
+  <arg name="use_mako_2" default="false" />
+
+  <!--Drive-by-Wire-->
+  <arg name="use_pacmod" default="false" />
+  <arg name="use_ssc" default="false"/>
+  <arg name="ssc_namespace" default="ssc"/>
+
+  <!-- Radar Params -->
+  <arg name="esr_can_frame" default="delphi_esr_can" />
+  <arg name="esr_can_hardware_id" default="10577" />
+  <arg name="esr_can_circuit_id" default="1" />
+  <arg name="esr_can_upside_down" default="false" />
+  <arg name="esr_can_viz_mature_tracks_only" default="true" />
+  <arg name="esr_socketcan_device" default="can0" />
+  <arg name="esr_eth_frame" default="delphi_esr_eth" />
+  <arg name="esr_eth_ip" default="192.168.1.22" />
+  <arg name="esr_eth_port" default="5555" />
+
+
+  <arg name="srr_rl_frame" default="srr_rl" />
+  <arg name="srr_rl_socketcan_device" default="can0" />
+  <arg name="srr_rl_hardware_id" default="10577" />
+  <arg name="srr_rl_circuit_id" default="2" />
+  <arg name="srr_rl_upside_down" default="false" />
+  <arg name="srr_rr_frame" default="srr_rr" />
+  <arg name="srr_rr_socketcan_device" default="can0" />
+  <arg name="srr_rr_hardware_id" default="10577" />
+  <arg name="srr_rr_circuit_id" default="2" />
+  <arg name="srr_rr_upside_down" default="false" />
+
+
+  <!-- ME Params -->
+  <arg name="mobileye_frame" default="mobileye" />
+  <arg name="mobileye_socketcan_device" default="can0" />
+  <arg name="mobileye_hardware_id" default="10577" />
+  <arg name="mobileye_circuit_id" default="3" />
+  <arg name="mobileye_viz_frame" default="me_viz" />
+
+  <!-- Lidar Params -->
+  <arg name="vlp32_1_frame" default="vlp32_1" />
+  <arg name="vlp32_1_ip" default="192.168.1.201" />
+  <arg name="vlp32_1_port" default="2368" />
+  <arg name="vlp32_1_calibration" default="$(find velodyne_pointcloud)/params/VeloView-VLP-32C.yaml" if="$(arg use_vlp32_1)" />
+  <arg name="vlp32_1_min_range" default="0.4" />
+  <arg name="vlp32_1_max_range" default="130.0" />
+
+
+  <!-- GPS Params -->
+  <arg name="novatel_frame" default="novatel" />
+  <arg name="novatel_imu_frame" default="imu" />
+  <arg name="novatel_imu_rate" default="100" />
+  <arg name="novatel_imu_sample_rate" default="-1" />
+  <arg name="novatel_ip" default="192.168.74.10" />
+  <arg name="novatel_port" default="2000" />
+  <arg name="novatel_span_frame_to_ros_frame" default="false" />
+
+  <!--Allied Vision Mako cameras-->
+  <arg name="mako_1_ip" default="192.168.40.1" />
+  <arg name="mako_1_frame" default="mako_driver"/>
+  <arg name="mako_1_frame_rate" default="15"/>
+  <arg name="mako_1_pixel_format" default="BayerRG8"/>
+
+  <arg name="mako_2_ip" default="192.168.30.1" />
+  <arg name="mako_2_frame" default="mako_passenger"/>
+  <arg name="mako_2_frame_rate" default="15"/>
+  <arg name="mako_2_pixel_format" default="BayerRG8"/>
+
+
+  <!-- DBW Params -->
+  <arg name="pacmod3_socketcan_device" default="can0" />
+  <arg name="pacmod3_hardware_id" default="10577" />
+  <arg name="pacmod3_circuit_id" default="0" />
+  <arg name="pacmod3_vehicle_type" default="LEXUS_RX_450H" />
+
+
+
+<!--TRANSFORMS-->
+
+    <arg name="base_frame" default="base_link" />
+
+  <node pkg="tf" type="static_transform_publisher" name="$(arg base_frame)_to_$(arg esr_can_frame)" args="4 0 0.57 0 0 0 $(arg base_frame) $(arg esr_can_frame) 50" />
+  <node pkg="tf" type="static_transform_publisher" name="$(arg base_frame)_to_$(arg srr_rl_frame)" args="-0.85 1.05 0.535 2.094 0 0 $(arg base_frame) $(arg srr_rl_frame) 100" />
+  <node pkg="tf" type="static_transform_publisher" name="$(arg base_frame)_to_$(arg srr_rr_frame)" args="-0.85 -1.05 0.535 -2.094 0 0 $(arg base_frame) $(arg srr_rr_frame) 100" />
+  <node pkg="tf" type="static_transform_publisher" name="$(arg base_frame)_to_$(arg mobileye_frame)" args="2.195 0 1.78 0 0 0 $(arg base_frame) $(arg mobileye_frame) 50" />
+  <node pkg="tf" type="static_transform_publisher" name="$(arg mobileye_frame)_to_$(arg mobileye_viz_frame)" args="0 0 0 0 0 0 $(arg mobileye_frame) $(arg mobileye_viz_frame) 50" />
+<node pkg="tf" type="static_transform_publisher" name="$(arg base_frame)_to_$(arg vlp32_1_frame)" args="1.02 0 2.63 0 0 0 $(arg base_frame) $(arg vlp32_1_frame) 50" />
+
+
+
+<!--LAUNCH-->
+
+  <!-- Radars -->
+  <group if="$(arg use_esr_can)" ns="$(arg esr_can_frame)">
+    <!--remap from="/$(arg esr_can_frame)/as_rx/vehicle_motion" to="/vehicle/twist" if="$(arg use_dataspeed)" /!-->
+
+    <include file="$(find delphi_esr)/launch/delphi_esr.launch">
+      <arg name="esr_frame_id" value="$(arg esr_can_frame)" />
+      <arg name="esr_upside_down" value="$(arg esr_can_upside_down)" />
+      <arg name="viz_mature_tracks_only" value="$(arg esr_can_viz_mature_tracks_only)" />
+      <arg name="use_kvaser" value="true" unless="$(arg use_socketcan)" />
+      <arg name="kvaser_hardware_id" value="$(arg esr_can_hardware_id)" unless="$(arg use_socketcan)" />
+      <arg name="kvaser_circuit_id" value="$(arg esr_can_circuit_id)" unless="$(arg use_socketcan)" />
+      <arg name="use_socketcan" value="true" if="$(arg use_socketcan)" />
+      <arg name="socketcan_device" value="$(arg esr_socketcan_device)" if="$(arg use_socketcan)" />
+    </include>
+  </group>
+
+  <include file="$(find delphi_esr)/launch/delphi_esr_eth.launch" ns="$(arg esr_eth_frame)" if="$(arg use_esr_eth)">
+    <arg name="frame_id" value="$(arg esr_eth_frame)" />
+    <arg name="ip_address" value="$(arg esr_eth_ip)" />
+    <arg name="port" value="$(arg esr_eth_port)" />
+  </include>
+
+  <include file="$(find delphi_srr)/launch/delphi_srr.launch" if="$(arg use_fl_srr)" ns="$(arg srr_fl_frame)">
+    <arg name="srr_frame_id" value="$(arg srr_fl_frame)" />
+    <arg name="srr_upside_down" value="$(arg srr_fl_upside_down)" />
+    <arg name="srr_side" value="left" />
+    <arg name="use_kvaser" value="true" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_hardware_id" value="$(arg srr_fl_hardware_id)" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_circuit_id" value="$(arg srr_fl_circuit_id)" unless="$(arg use_socketcan)" />
+    <arg name="use_socketcan" value="true" if="$(arg use_socketcan)" />
+    <arg name="socketcan_device" value="$(arg srr_fl_socketcan_device)" if="$(arg use_socketcan)" />
+  </include>
+
+  <include file="$(find delphi_srr)/launch/delphi_srr.launch" if="$(arg use_fr_srr)" ns="$(arg srr_fr_frame)">
+    <arg name="srr_frame_id" value="$(arg srr_fr_frame)" />
+    <arg name="srr_upside_down" value="$(arg srr_fr_upside_down)" />
+    <arg name="srr_side" value="right" />
+    <arg name="use_kvaser" value="true" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_hardware_id" value="$(arg srr_fr_hardware_id)" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_circuit_id" value="$(arg srr_fr_circuit_id)" unless="$(arg use_socketcan)" />
+    <arg name="use_socketcan" value="true" if="$(arg use_socketcan)" />
+    <arg name="socketcan_device" value="$(arg srr_fr_socketcan_device)" if="$(arg use_socketcan)" />
+  </include>
+
+  <include file="$(find delphi_srr)/launch/delphi_srr.launch" if="$(arg use_rl_srr)" ns="$(arg srr_rl_frame)">
+    <arg name="srr_frame_id" value="$(arg srr_rl_frame)" />
+    <arg name="srr_upside_down" value="$(arg srr_rl_upside_down)" />
+    <arg name="srr_side" value="left" />
+    <arg name="use_kvaser" value="true" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_hardware_id" value="$(arg srr_rl_hardware_id)" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_circuit_id" value="$(arg srr_rl_circuit_id)" unless="$(arg use_socketcan)" />
+    <arg name="use_socketcan" value="true" if="$(arg use_socketcan)" />
+    <arg name="socketcan_device" value="$(arg srr_rl_socketcan_device)" if="$(arg use_socketcan)" />
+  </include>
+
+  <include file="$(find delphi_srr)/launch/delphi_srr.launch" if="$(arg use_rr_srr)" ns="$(arg srr_rr_frame)">
+    <arg name="srr_frame_id" value="$(arg srr_rr_frame)" />
+    <arg name="srr_upside_down" value="$(arg srr_rr_upside_down)" />
+    <arg name="srr_side" value="right" />
+    <arg name="use_kvaser" value="true" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_hardware_id" value="$(arg srr_rr_hardware_id)" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_circuit_id" value="$(arg srr_rr_circuit_id)" unless="$(arg use_socketcan)" />
+    <arg name="use_socketcan" value="true" if="$(arg use_socketcan)" />
+    <arg name="socketcan_device" value="$(arg srr_rr_socketcan_device)" if="$(arg use_socketcan)" />
+  </include>
+
+
+  <!-- Mobileye -->
+  <include file="$(find mobileye_560_660)/launch/mobileye_560_660.launch" if="$(arg use_mobileye)" ns="$(arg mobileye_frame)">
+    <arg name="sensor_frame_id" value="$(arg mobileye_frame)" />
+    <arg name="viz_frame_id" value="$(arg mobileye_viz_frame)" />
+    <arg name="use_kvaser" value="true" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_hardware_id" value="$(arg mobileye_hardware_id)" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_circuit_id" value="$(arg mobileye_circuit_id)" unless="$(arg use_socketcan)" />
+    <arg name="use_socketcan" value="true" if="$(arg use_socketcan)" />
+    <arg name="socketcan_device" value="$(arg mobileye_socketcan_device)" if="$(arg use_socketcan)" />
+  </include>
+
+
+ <!--Velodyne VLP32-->
+   <include file="$(find velodyne_pointcloud)/launch/VLP-32C_points.launch" ns="$(arg vlp32_1_frame)" if="$(arg use_vlp32_1)">
+    <arg name="device_ip" value="$(arg vlp32_1_ip)" />
+    <arg name="port" value="$(arg vlp32_1_port)" />
+    <arg name="frame_id" value="$(arg vlp32_1_frame)" />
+    <arg name="calibration" value="$(arg vlp32_1_calibration)"/>
+  </include>
+
+<!--Allied Vision Makos-->
+<group ns="mako_1" if="$(arg use_mako_1)" >
+   <node name="image_proc" pkg="image_proc" type="image_proc"/>
+
+   <node name="mako_1" pkg="avt_vimba_camera" type="mono_camera_node" output="screen">
+		<param name="guid" value=""/>
+		<param name="ip" value="$(arg mako_1_ip)"/>
+		<param name="camera_info_url" value="file://$(find avt_vimba_camera)/calibrations/calibration_50-0503343290.yaml"/>
+		<param name="frame_id" value="$(arg mako_1_frame)"/>
+		<param name="trig_timestamp_topic" value=""/>
+		<param name="show_debug_prints" value="true"/>
+
+		<!-- Trigger mode:
+			1. Freerun
+			2. SyncIn1
+			3. SyncIn2
+			4. SyncIn3
+			5. SyncIn4
+			6. FixedRate
+			7. Software
+		-->
+		<param name="trigger_source" value="FixedRate"/>
+
+		<!-- Acquisition mode:
+			1. Continuous
+			2. SingleFrame
+			3. MultiFrame
+			4. Recorder
+		-->
+		<param name="acquisition_mode" value="Continuous"/>
+
+		<!-- Acquisition rate in fps -->
+		<param name="acquisition_rate" value="$(arg mako_1_frame_rate)"/>
+
+              
+		<!-- Pixel format:
+			1. Mono8
+			2. Mono12
+			3. Mono12Packed
+			4. BayerRG8
+			5. BayerRG12Packed
+			6. BayerGR12
+			7. RGB8Packed
+			8. BGR8Packed
+		-->
+		<param name="pixel_format" value="$(arg mako_1_pixel_format)"/> <!--BayerRG8-->
+		<!-- Exposure in us -->
+		<param name="exposure" value="1000"/>
+		<!-- Gain in dB -->
+		<param name="gain" value="0"/>
+
+		<!-- Auto control
+			1. Off
+			2. Once
+			3. Continuous
+		-->
+		<param name="exposure_auto" value="Continuous"/>
+		<param name="gain_auto" value="Continuous"/>
+		<param name="whitebalance_auto" value="Continuous"/>
+
+		<param name="binning_x" value="1"/>
+		<param name="binning_y" value="1"/>
+		<param name="decimation_x" value="1"/>
+		<param name="decimation_y" value="1"/>
+		<param name="x_offset" value="8"/>
+		<param name="y_offset" value="9"/>
+		<param name="width" value="1920"/>
+		<param name="height" value="1440"/>
+
+		<param name="stream_bytes_per_second" value="45000000"/>
+    </node>
+</group>
+
+
+
+<group ns="mako_2" if="$(arg use_mako_2)" >
+  <node name="image_proc" pkg="image_proc" type="image_proc"/>
+
+  <node name="mako_2" pkg="avt_vimba_camera" type="mono_camera_node" output="screen">
+		<param name="guid" value=""/>
+		<param name="ip" value="$(arg mako_2_ip)"/>
+		<param name="camera_info_url" value="file://$(find avt_vimba_camera)/calibrations/calibration_50-0503343290.yaml"/>
+		<param name="frame_id" value="$(arg mako_2_frame)"/>
+		<param name="trig_timestamp_topic" value=""/>
+		<param name="show_debug_prints" value="true"/>
+
+		<!-- Trigger mode:
+			1. Freerun
+			2. SyncIn1
+			3. SyncIn2
+			4. SyncIn3
+			5. SyncIn4
+			6. FixedRate
+			7. Software
+		-->
+		<param name="trigger_source" value="FixedRate"/>
+
+		<!-- Acquisition mode:
+			1. Continuous
+			2. SingleFrame
+			3. MultiFrame
+			4. Recorder
+		-->
+		<param name="acquisition_mode" value="Continuous"/>
+
+		<!-- Acquisition rate in fps -->
+		<param name="acquisition_rate" value="$(arg mako_1_frame_rate)"/>
+
+              
+		<!-- Pixel format:
+			1. Mono8
+			2. Mono12
+			3. Mono12Packed
+			4. BayerRG8
+			5. BayerRG12Packed
+			6. BayerGR12
+			7. RGB8Packed
+			8. BGR8Packed
+		-->
+		<param name="pixel_format" value="$(arg mako_2_pixel_format)"/> <!--BayerRG8-->
+		<!-- Exposure in us -->
+		<param name="exposure" value="1000"/>
+		<!-- Gain in dB -->
+		<param name="gain" value="0"/>
+
+		<!-- Auto control
+			1. Off
+			2. Once
+			3. Continuous
+		-->
+		<param name="exposure_auto" value="Continuous"/>
+		<param name="gain_auto" value="Continuous"/>
+		<param name="whitebalance_auto" value="Continuous"/>
+
+		<param name="binning_x" value="1"/>
+		<param name="binning_y" value="1"/>
+		<param name="decimation_x" value="1"/>
+		<param name="decimation_y" value="1"/>
+		<param name="x_offset" value="8"/>
+		<param name="y_offset" value="9"/>
+		<param name="width" value="1920"/>
+		<param name="height" value="1440"/>
+
+		<param name="stream_bytes_per_second" value="45000000"/>
+	</node>
+  </group>
+
+  <!-- GPS -->
+  <node pkg="novatel_gps_driver"
+        type="novatel_gps_node"
+        name="novatel_gps"
+        ns="$(arg novatel_frame)"
+        if="$(arg use_novatel)">
+    <param name="connection_type" value="tcp"/>
+    <param name="device" value="$(arg novatel_ip):$(arg novatel_port)" />
+    <param name="publish_novatel_positions" value="true" />
+    <param name="frame_id" value="$(arg novatel_frame)" />
+    <param name="imu_rate" value="$(arg novatel_imu_rate)" />
+    <param name="imu_sample_rate" value="$(arg novatel_imu_sample_rate)" />
+    <param name="imu_frame_id" value="$(arg novatel_imu_frame)" />
+    <param name="use_binary_messages" value="true" />
+    <param name="publish_nmea_messages" value="true" />
+    <param name="publish_imu_messages" value="true" />
+    <param name="gpgga_gprmc_sync_tol" value="1.05" />
+    <param name="gpgga_position_sync_tol" value="1.05" />
+    <param name="span_frame_to_ros_frame" value="$(arg novatel_span_frame_to_ros_frame)" />
+  </node>
+
+
+<!--Drive By Wire-->
+  <include file="$(find pacmod3)/launch/pacmod3.launch" if="$(arg use_pacmod)" ns="pacmod">
+    <arg name="pacmod_vehicle_type" value="$(arg pacmod3_vehicle_type)" />
+    <arg name="use_kvaser" value="true" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_hardware_id" value="$(arg pacmod3_hardware_id)" unless="$(arg use_socketcan)" />
+    <arg name="kvaser_circuit_id" value="$(arg pacmod3_circuit_id)" unless="$(arg use_socketcan)" />
+    <arg name="use_socketcan" value="true" if="$(arg use_socketcan)" />
+    <arg name="socketcan_device" value="$(arg pacmod3_socketcan_device)" if="$(arg use_socketcan)" />
+  </include>
+
+
+  <include file="$(find ssc_pm_lexus)/launch/speed_steering_control.launch" if="$(arg use_ssc)">
+    <arg name="namespace" value="$(arg ssc_namespace)" />
+  </include>
+
+
+</launch>

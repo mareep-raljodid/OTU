@@ -1,0 +1,5 @@
+<launch>
+
+	<node pkg="rosbag" type="record" name="my_rosbag" output="screen" args="-o /home/dev/ros_workspaces/odot_testing/src/testing/bag/ /novatel/corrimudata /novatel/fix /novatel/gps /novatel/imu /vlp32_1/velodyne_points /camera/rgb/image_raw /livox/lidar /livox/imu /piksi/navsatfix_rtk_fix /piksi/navsatfix_best_fix /vlp32_1/scan /vlp32_1/velodyne_packets /vlp32_1/vlp32_1_nodelet_manager/bond /vlp32_1/vlp32_1_nodelet_manager_cloud/parameter_descriptions /vlp32_1/vlp32_1_nodelet_manager_cloud/parameter_updates /vlp32_1/vlp32_1_nodelet_manager_driver/parameter_descriptions /vlp32_1/vlp32_1_nodelet_manager_driver/parameter_updates /vlp32_1/vlp32_1_nodelet_manager_laserscan/parameter_descriptions /vlp32_1/vlp32_1_nodelet_manager_laserscan/parameter_updates"/>
+
+</launch>
