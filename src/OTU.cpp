@@ -57,6 +57,7 @@ int main(int, char**)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.Fonts->AddFontFromFileTTF("src/fonts/CaviarDreams_Bold.ttf", 40);
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
 
     ImGui::StyleColorsLight();
@@ -105,37 +106,52 @@ int main(int, char**)
         {
 
             ImGui::Begin("ODOT Project [ROS SENSOR SPAWN]");
-            ImGui::Text("Current feature set in this release: Sensor spawning [roslaunch exec. and BAGGING]");             
-            //ImGui::Checkbox("Start Data collection (foreground, realtime)", &show_another_window);
-            ImGui::InputText("<- ROS Launch File Path", f, MAX_LEN-1);
-            ImGui::InputText("<- ROS Package Name    ", p, MAX_LEN-1);
+            ImGui::Text("Current feature set in this release: Sensor spawning [roslaunch exec. and BAGGING]  ");             
+            ImGui::Text("-------------------------------------------------------------------------------------------"); 
+            ImGui::Checkbox("[QUICK COLLECT] Data collection (default, foreground, realtime, to OTU/tmp)", &show_another_window);
+            ImGui::Text("..........................................................................................................................................................................");
             
+            ImGui::InputText("  ", f, MAX_LEN-1);
+                ImGui::Text("Please enter ROS Launch File path above");
+                ImGui::Text(" ");
+                ImGui::Text(" ");
+            ImGui::InputText(" ", p, MAX_LEN-1);
+                ImGui::Text("Please enter ROS Package name above");
+                ImGui::Text("..........................................................................................................................................................................");
+            ImGui::Text(" ");
             if (ImGui::Button("Start ROS Sensors and Bag logs")){
                 ros_fail = !startROS(f,p);
                 ros_running = startROS(f,p);
 		        ros_bag_needed = true;
 	        }
             ImGui::SameLine();
-                ImGui::Text("     | Current Sensor status:");
-            if (ImGui::Button("Start ROS Sensors             ")){
+                ImGui::Text("       <> Current Sensor status:");
+            ImGui::Text(" ");
+
+            if (ImGui::Button("Start ROS Sensors                    ")){
                 ros_fail = !startROS(f,p);
                 ros_running = startROS(f,p);
 		        ros_bag_needed = false;
 	        }
 
             ImGui::SameLine();
-                ImGui::Text("     |      [] Camera: N/A");
+                ImGui::Text("              [] Camera: N/A");
+            ImGui::Text(" ");
 
-            if (ImGui::Button("Pause ROS Sensors             ")){}
+
+            if (ImGui::Button("Pause ROS Sensors                  ")){}
             ImGui::SameLine();
-                ImGui::Text("     |      [] LIDAR   N/A");
+                ImGui::Text("               [] LIDAR   N/A");
+            ImGui::Text(" ");
+
             
-            if (ImGui::Button("STOP         ")){}
+            if (ImGui::Button("STOP                 ")){}
             ImGui::SameLine();
             if (ImGui::Button("RESTART        ")){}
             ImGui::SameLine();
-                ImGui::Text("     |      [] GPS:    N/A");
-            
+                ImGui::Text("              [] GPS:    N/A");
+            ImGui::Text(" ");
+           
             
 	    
 	                    ImGui::Checkbox("Clear collected", &clrData); 
@@ -174,13 +190,14 @@ int main(int, char**)
             {
                 ImGui::Text("Current data is being bagged at: OTU/bags/latest");
                 ImGui::Text(
-                "Press STOP to stop, enter name and/or path for file below, \n if left unspecified it will be saved in the latest directrory till next bag appears."
+                "Press STOP to stop, enter name and/or path for file below, \nif left unspecified it will be saved in the latest directrory till next bag appears."
                 );
+                ImGui::Text(" ");
             }
 
             int bit1 = 2;//readData();
             rc = true;//writeData(); //return true upon write successful
-            ImGui::InputText("<- ROS Launch File path and/or name", ros_bag_name, MAX_LEN-1);  
+            ImGui::InputText("   ", ros_bag_name, MAX_LEN-1);  
             if (ImGui::Button("STOP")){
                 if (ros_bag_name != ""){
                     char buffer[MAX_LEN];
