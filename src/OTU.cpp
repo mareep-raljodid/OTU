@@ -47,7 +47,7 @@ int main(int, char**)
     al_install_mouse();
     al_init_primitives_addon();
     al_set_new_display_flags(ALLEGRO_RESIZABLE);
-    ALLEGRO_DISPLAY* display = al_create_display(1280, 720);
+    ALLEGRO_DISPLAY* display = al_create_display(800,400);
     al_set_window_title(display, "ODOT Project");
     ALLEGRO_EVENT_QUEUE* queue = al_create_event_queue();
     al_register_event_source(queue, al_get_display_event_source(display));
@@ -59,7 +59,7 @@ int main(int, char**)
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
 
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
 
     ImGui_ImplAllegro5_Init(display);
 
@@ -76,7 +76,7 @@ int main(int, char**)
     static int counter = 0;
     char ros_bag_name[MAX_LEN] = "";
 
-
+    system ("mkdir bags/latest");
     bool running = true;
     while (running)
     {
@@ -105,26 +105,45 @@ int main(int, char**)
         {
 
             ImGui::Begin("ODOT Project [ROS SENSOR SPAWN]");
-            ImGui::Text("Current feature set in this release: Sensor spawning [roslaunch exec.]");             ImGui::Checkbox("Start Data collection (foreground, realtime)", &show_another_window);
-            ImGui::InputText("<- ROS Launch File Path", f, MAX_LEN-1);   
-            ImGui::InputText("<- ROS Package Name", p, MAX_LEN-1);
-            ImGui::Checkbox("Clear collected", &clrData); 
+            ImGui::Text("Current feature set in this release: Sensor spawning [roslaunch exec. and BAGGING]");             
+            //ImGui::Checkbox("Start Data collection (foreground, realtime)", &show_another_window);
+            ImGui::InputText("<- ROS Launch File Path", f, MAX_LEN-1);
+            ImGui::InputText("<- ROS Package Name    ", p, MAX_LEN-1);
             
-	    if (ImGui::Button("Start ROS Sensors")){
+            if (ImGui::Button("Start ROS Sensors and Bag logs")){
                 ros_fail = !startROS(f,p);
                 ros_running = startROS(f,p);
-		ros_bag_needed = false;
-	    }
-	    
-	    if (ImGui::Button("Start ROS Sensors and Bag logs")){
-                ros_fail = !startROS(f,p);
-                ros_running = startROS(f,p);
-		ros_bag_needed = true;
-	    }
+		        ros_bag_needed = true;
+	        }
             ImGui::SameLine();
-            ImGui::Text("Current Count = %d", counter);
+                ImGui::Text("     | Current Sensor status:");
+            if (ImGui::Button("Start ROS Sensors             ")){
+                ros_fail = !startROS(f,p);
+                ros_running = startROS(f,p);
+		        ros_bag_needed = false;
+	        }
 
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+            ImGui::SameLine();
+                ImGui::Text("     |      [] Camera: N/A");
+
+            if (ImGui::Button("Pause ROS Sensors             ")){}
+            ImGui::SameLine();
+                ImGui::Text("     |      [] LIDAR   N/A");
+            
+            if (ImGui::Button("STOP         ")){}
+            ImGui::SameLine();
+            if (ImGui::Button("RESTART        ")){}
+            ImGui::SameLine();
+                ImGui::Text("     |      [] GPS:    N/A");
+            
+            
+	    
+	                    ImGui::Checkbox("Clear collected", &clrData); 
+            
+	    
+       //     ImGui::Text("Current Count = %d", counter);
+
+       //     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
             ImGui::End();
         }
         if(clrData){
