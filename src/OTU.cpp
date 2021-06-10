@@ -42,6 +42,8 @@ bool startROS(char *f, char *p)
 
 int main(int, char**)
 {
+
+    system ("mkdir bags/latest");
     al_init();
     al_install_keyboard();
     al_install_mouse();
@@ -77,7 +79,6 @@ int main(int, char**)
     static int counter = 0;
     char ros_bag_name[MAX_LEN] = "";
 
-    system ("mkdir bags/latest");
     bool running = true;
     while (running)
     {
