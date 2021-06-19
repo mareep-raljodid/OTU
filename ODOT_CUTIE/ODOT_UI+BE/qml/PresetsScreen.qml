@@ -50,6 +50,9 @@
 
 import QtQuick 2.11
 
+import QtQuick.Window 2.2
+import QtQuick.Controls 2.12
+
 Item {
     id: presetsScreen
     width: 480
@@ -100,11 +103,64 @@ Item {
         }
     }
 
+    Popup {
+            parent: Overlay.overlay
+            x: Math.round((parent.width - width) / 2) - 170
+            y: Math.round((parent.height - height) / 2) - 110
+            //width: 100
+            //height: 100
+            padding: 0
+            id: popup
+            contentItem: Item {
+                id: settingScreen
+                width: 480
+                height: 272
+
+                Rectangle {
+                    id: rectangle
+                    x: 0
+                    y: 0
+                    width: 350
+                    height: 220
+                    color: "#206c3c"
+
+                    Text {
+                        id: text1
+                        x: 135
+                        y: 0
+                        color: "#ffffff"
+                        text: qsTr("Live Camera")
+                        font.pixelSize: 14
+                        font.family: "Maven Pro"
+                        styleColor: "#ffffff"
+                    }
+
+                    Image {
+                        id: image
+                        x: 45
+                        y: 18
+                        width: 261
+                        height: 202
+                        source: "../../../../../Downloads/s4-l50_2-p51.png"
+                        fillMode: Image.PreserveAspectFit
+                    }
+                }
+            }
+            modal: true
+            focus: true
+            closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+        }
+
     Washprogram {
         id: washprogram
 
         visible: false
         anchors.fill: parent
+
+        bigbutton.onClicked: {
+            //pageLoader.source = "SettingsScreen.ui.qml"
+            onClicked: popup.open()
+        }
 
         Connections {
             target: washprogram
@@ -120,6 +176,21 @@ Item {
         }
     }
 
+    SettingsScreen {
+        id: settingsScreen
+
+        visible: false
+        anchors.fill: parent
+
+        Connections {
+            target: settingsScreen
+            onCanceled: {
+                visible: false
+            }
+
+        }
+
+    }
 
     Connections {
         target: presetsScreen

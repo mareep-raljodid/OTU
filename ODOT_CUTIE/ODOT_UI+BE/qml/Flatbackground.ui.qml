@@ -52,23 +52,12 @@ import QtQuick 2.8
 
 Item {
     id: flatbackground
-    width: 480
-    height: 272
+
 
     Rectangle {
         id: rectangle
         color: "#1b7e57"
         anchors.fill: parent
-
-        Rectangle {
-            id: rectangle10
-            x: 423
-            y: 0
-            width: 57
-            height: 32
-            opacity: 0.214
-            color: "#1e1111"
-        }
     }
 }
 

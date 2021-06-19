@@ -49,6 +49,8 @@
 ****************************************************************************/
 
 import QtQuick 2.15
+import QtQuick.Window 2.2
+import QtQuick.Controls 2.12
 
 Item {
     id: root
@@ -71,16 +73,6 @@ Item {
         }
     }
 
-    SettingsScreen {
-        id: settingsScreen
-
-        visible: false
-
-        onSettingsClosed: {
-            root.state = "start"
-        }
-    }
-
     PresetsScreen {
         id: presetsScreen
 
@@ -96,15 +88,73 @@ Item {
         }
     }
 
+    Popup {
+            parent: Overlay.overlay
+            x: Math.round((parent.width - width) / 2) - 170
+            y: Math.round((parent.height - height) / 2) - 110
+            //width: 100
+            //height: 100
+            padding: 0
+            id: popup
+            contentItem: Item {
+                id: settingsbScreen
+                width: 480
+                height: 272
+
+                Rectangle {
+                    id: rectangle
+                    x: 0
+                    y: 0
+                    width: 350
+                    height: 220
+                    color: "#206c3c"
+
+                    Text {
+                        id: text1
+                        x: 135
+                        y: 0
+                        color: "#ffffff"
+                        text: qsTr("Live Camera")
+                        font.pixelSize: 14
+                        font.family: "Maven Pro"
+                        styleColor: "#ffffff"
+                    }
+
+                    Image {
+                        id: image
+                        x: 45
+                        y: 18
+                        width: 261
+                        height: 202
+                        source: "../../../../../Downloads/s4-l50_2-p51.png"
+                        fillMode: Image.PreserveAspectFit
+                    }
+                }
+            }
+            modal: true
+            focus: true
+            closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+        }
+
+
     RunningScreen {
         id: runningScreen
 
         runDuration: presetsScreen.runDuration
         visible: false
+        bigbutton.onClicked: {
+            onClicked: popup.open()
+        }
 
         onRunFinished: {
             root.state = "start"
         }
+    }
+
+    SettingsScreen {
+        id: settingsScreen
+
+        visible: true
     }
 
     states: [

@@ -56,9 +56,11 @@ Item {
 
     property int duration: 20
     signal presetSelected
+    signal settingsScr
     width: 480
     height: 95
     opacity: 1
+    property alias preset0: preset0
 
     Bigbutton {
         id: preset0
@@ -96,9 +98,7 @@ Item {
         Connections {
             target: preset1
             onClicked: {
-                presetsroll.duration = preset1.sportsDuration
-
-                presetSelected()
+                presetsScreen.state = "WashProgram"
             }
         }
     }

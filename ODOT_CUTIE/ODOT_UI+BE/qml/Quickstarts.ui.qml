@@ -56,55 +56,20 @@ Item {
     id: quickstarts
     width: 480
     height: 272
-    property alias image3: image3
-    property alias quickstartdetails: quickstartdetails
 
     property int runDuration: 0
     signal detailsClicked
     signal applied
 
 
-    Flatbackground {
-        id: backgroundfull
-        anchors.fill: parent
-        anchors.rightMargin: 0
-        anchors.bottomMargin: 0
-        anchors.leftMargin: 0
-        anchors.topMargin: 0
-
-        Image {
-            id: image2
-            x: 286
-            y: 97
-            width: 84
-            height: 79
-            opacity: 0.287
-            source: "assets/aa.png"
-            fillMode: Image.PreserveAspectFit
-        }
-
-        Image {
-            id: image3
-            x: 108
-            y: 97
-            width: 84
-            height: 79
-            opacity: 0.287
-            source: "assets/aa.png"
-            fillMode: Image.PreserveAspectFit
-        }
-
-
-    }
-
     Bigbutton {
         id: quickstartgo
-        width: 84
-        height: 89
-        opacity: 1
+        width: 121
+        height: 130
+        opacity: 0.177
         anchors.verticalCenter: parent.verticalCenter
-        anchors.verticalCenterOffset: 1
-        anchors.horizontalCenterOffset: 88
+        anchors.verticalCenterOffset: 0
+        anchors.horizontalCenterOffset: 100
         anchors.horizontalCenter: parent.horizontalCenter
         presetlabelText: "GO"
 
@@ -116,29 +81,88 @@ Item {
         }
     }
 
+    Flatbackground {
+        id: backgroundfull
+        anchors.fill: parent
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+        anchors.topMargin: 0
 
+        Image {
+            id: image2
+            x: 284
+            y: 79
+            width: 111
+            height: 115
+            opacity: 0.287
+            source: "assets/aa.png"
+            fillMode: Image.PreserveAspectFit
+        }
 
+        Image {
+            id: image
+            x: 279
+            y: 73
+            width: 120
+            height: 127
+            source: "assets/washdrumoutlne 2.png"
+            fillMode: Image.PreserveAspectFit
 
-
-
-    Bigbutton {
-        id: quickstartdetails
-        width: 113
-        height: 110
-        opacity: 1
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.verticalCenterOffset: 0
-        anchors.horizontalCenterOffset: -90
-        anchors.horizontalCenter: parent.horizontalCenter
-        presetlabelText: "Set Param"
-
-        Connections {
-            target: quickstartdetails
-            onClicked: {
-                detailsClicked()
+            Text {
+                id: text2
+                x: 39
+                y: 46
+                color: "#d7eab2"
+                text: qsTr("GO")
+                font.pixelSize: 30
+                styleColor: "#ffffff"
+                font.family: "Maven Pro"
             }
         }
+
+        Rectangle {
+            id: rectangle
+            x: 16
+            y: 141
+            width: 201
+            height: 29
+            color: "#04515a"
+        }
+
+        Text {
+            id: text1
+            x: 16
+            y: 116
+            width: 83
+            height: 15
+            color: "#ffffff"
+            text: qsTr("Custom Name:")
+            font.pixelSize: 15
+            font.family: "Maven Pro"
+        }
+
+        Rectangle {
+            id: rectangle1
+            x: 8
+            y: 116
+            width: 219
+            height: 63
+            opacity: 0.202
+            color: "#6af3ff"
+        }
+
+
+
+
+
     }
+
+
+
+
+
+
 
 
 
@@ -146,7 +170,7 @@ Item {
 
     Text {
         id: quickstrartlabel
-        y: 29
+        y: 37
         width: 323
         height: 46
         color: "#ffffff"
@@ -154,7 +178,7 @@ Item {
         font.pixelSize: 30
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        anchors.horizontalCenterOffset: 1
+        anchors.horizontalCenterOffset: -120
         anchors.horizontalCenter: parent.horizontalCenter
         font.family: "Maven Pro"
     }
@@ -162,6 +186,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.75}
+    D{i:0;formeditorZoom:1.5}
 }
 ##^##*/

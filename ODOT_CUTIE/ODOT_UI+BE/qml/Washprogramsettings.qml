@@ -57,6 +57,7 @@ Item {
 
     signal cancelClicked
     signal applyClicked
+    signal onCamApplied
 
     property int activeItem: 4
 
@@ -85,12 +86,13 @@ Item {
 
     Smallbutton {
         id: washSettingsCancel
+        y: 190
         width: 43
         height: 43
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        anchors.leftMargin: 10
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 132
         currenticonoffSource: "assets/closeiconoff.png"
         lockedicononSource: "assets/closeiconoff.png"
 
@@ -98,25 +100,6 @@ Item {
             target: washSettingsCancel
             onClicked: {
                 washprogramsettings.cancelClicked()
-            }
-        }
-    }
-
-    Smallbutton {
-        id: washSettingsOK
-        width: 43
-        height: 43
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        anchors.rightMargin: 10
-        currenticonoffSource: "assets/goiconoff.png"
-        lockedicononSource: "assets/goiconon.png"
-
-        Connections {
-            target: washSettingsOK
-            onClicked: {
-                washprogramsettings.applyClicked()
             }
         }
     }
@@ -139,6 +122,17 @@ Item {
             anchors.topMargin: 313
         }
     }
+
+    Component {
+       id: canva
+       Rectangle {
+           x: 0
+           y: 0
+           width: 480
+           height: 272
+       }
+   }
+
 }
 
 

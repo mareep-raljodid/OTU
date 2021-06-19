@@ -141,6 +141,8 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
+
+
     Image {
         id: washdrumoutlne
         anchors.verticalCenter: parent.verticalCenter
@@ -217,13 +219,13 @@ Item {
 
     Smallbutton {
         id: stopbuttoninstance
-        y: 214
+        y: 16
         width: 43
         height: 43
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 15
-        anchors.leftMargin: 16
+        anchors.bottomMargin: 213
+        anchors.leftMargin: 141
         lockedicononSource: "assets/closeiconoff.png"
         currenticonoffSource: "assets/pauseiconon.png"
 
@@ -380,20 +382,22 @@ Item {
             }
         }
     }
+
     LockButton {
         id: pausebuttoninstance
-        x: 16
-        y: 114
+        x: 79
+        y: 16
         width: 43
         height: 43
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 115
-        anchors.rightMargin: 421
+        anchors.bottomMargin: 213
+        anchors.rightMargin: 358
         unlockedicononSource: "assets/resumeiconon.png"
         unlockediconoffSource: "assets/resumeiconoff.png"
         lockedicononSource: "assets/pauseiconoff.png"
         currenticonoffSource: "assets/pauseiconon_1.png"
     }
+
 }
 

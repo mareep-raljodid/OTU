@@ -58,13 +58,14 @@ Item {
 
     property int duration: 20
     signal presetSelected
+    signal detailsClicked
 
     Flatbackground {
         id: backgroundfull
         anchors.fill: parent
         anchors.rightMargin: 0
         anchors.bottomMargin: 0
-        anchors.leftMargin: -7
+        anchors.leftMargin : -7
         anchors.topMargin: 0
 
         Rectangle {

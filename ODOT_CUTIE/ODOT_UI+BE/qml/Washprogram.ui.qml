@@ -54,16 +54,20 @@ Item {
     id: washprogramScreen
     width: 480
     height: 272
+    property alias image3: image3
+    property alias image5: image5
+    property alias bigbutton: bigbutton
 
     signal canceled
     signal applied
-
+    signal onCamScr
     signal resetSettings
 
     property int runDuration: washProgramSettings.timeInt
 
     Washprogramgrid {
         id: washProgramGrid
+        x: 0
         y: 1
         width: 270
         height: 270
@@ -96,45 +100,11 @@ Item {
         anchors.leftMargin: 0
         anchors.topMargin: 0
 
-
-        Rectangle {
-            id: rectangle
-            x: 15
-            y: 13
-            width: 407
-            height: 98
-            opacity: 0.238
-            visible: true
-            color: "#ffffff"
-
-            Rectangle {
-                id: rectangle1
-                x: 208
-                y: 0
-                width: 198
-                height: 98
-                visible: true
-                color: "#99b4fb"
-            }
-        }
-        Text {
-            id: text1
-            x: 35
-            y: 22
-            width: 131
-            height: 18
-            visible: true
-            color: "#000000"
-            text: qsTr("ROS Launch File Path:")
-            font.pixelSize: 13
-            font.family: "Maven Pro"
-        }
-
         Rectangle {
             id: rectangle4
-            x: 15
-            y: 117
-            width: 108
+            x: 62
+            y: 33
+            width: 101
             height: 141
             opacity: 0.202
             visible: true
@@ -143,10 +113,10 @@ Item {
 
             Rectangle {
                 id: rectangle8
-                x: 146
-                y: 81
-                width: 92
-                height: 52
+                x: 116
+                y: 72
+                width: 93
+                height: 61
                 visible: true
                 color: "#ffffff"
             }
@@ -154,10 +124,10 @@ Item {
 
             Rectangle {
                 id: rectangle7
-                x: 8
-                y: 81
-                width: 92
-                height: 52
+                x: 10
+                y: 72
+                width: 83
+                height: 61
                 visible: true
                 color: "#ffffff"
             }
@@ -165,63 +135,15 @@ Item {
 
         }
 
-        Text {
-            id: text2
-            x: 35
-            y: 52
-            width: 131
-            height: 18
-            visible: true
-            color: "#000000"
-            text: qsTr("ROS Launch Package Name:")
-            font.pixelSize: 13
-            font.family: "Maven Pro"
 
-            Rectangle {
-                id: rectangle10
-                x: 388
-                y: -51
-                width: 57
-                height: 32
-                opacity: 0.214
-                visible: true
-                color: "#1e1111"
-            }
-        }
-
-
-        Text {
-            id: text3
-            x: 35
-            y: 86
-            width: 131
-            height: 18
-            visible: true
-            color: "#000000"
-            text: qsTr("ROS Latest Bag Default Name:")
-            font.pixelSize: 13
-            font.family: "Maven Pro"
-        }
-
-
-        Rectangle {
-            id: rectangle2
-            x: 15
-            y: 41
-            width: 407
-            height: 5
-            opacity: 0.324
-            visible: true
-            color: "#353b4f"
-        }
 
 
 
         Image {
             id: image
-            x: 22
-            y: 123
-            width: 95
+            x: 93
+            y: 33
+            width: 52
             height: 73
             visible: true
             source: "assets/camera.png"
@@ -235,8 +157,8 @@ Item {
 
         Rectangle {
             id: rectangle5
-            x: 153
-            y: 117
+            x: 169
+            y: 33
             width: 108
             height: 141
             opacity: 0.202
@@ -246,19 +168,19 @@ Item {
 
         Rectangle {
             id: rectangle6
-            x: 288
-            y: 117
-            width: 177
-            height: 85
+            x: 283
+            y: 33
+            width: 104
+            height: 141
             opacity: 0.202
             visible: true
             color: "#b9ca70"
 
             Rectangle {
                 id: rectangle9
-                x: 91
-                y: 16
-                width: 78
+                x: 8
+                y: 72
+                width: 88
                 height: 61
                 visible: true
                 color: "#ffffff"
@@ -266,56 +188,100 @@ Item {
         }
 
         BorderImage {
-            id: borderImage
-            x: 304
-            y: 216
-            width: 32
-            height: 33
-            opacity: 0.202
-            visible: true
-            source: "assets/aa.png"
-        }
-
-        BorderImage {
             id: borderImage1
-            x: 416
-            y: 216
-            width: 32
-            height: 33
-            opacity: 0.214
+            x: 424
+            y: 223
+            width: 35
+            height: 37
+            opacity: 0.494
             visible: true
             source: "assets/aa.png"
         }
         Image {
             id: image1
-            x: 165
-            y: 123
-            width: 83
-            height: 68
+            x: 193
+            y: 43
+            width: 61
+            height: 54
             visible: true
             source: "assets/lidar.png"
             fillMode: Image.PreserveAspectFit
         }
         Image {
             id: image2
-            x: 294
-            y: 123
-            width: 82
-            height: 73
+            x: 304
+            y: 45
+            width: 54
+            height: 50
             visible: true
             source: "assets/map.png"
             fillMode: Image.PreserveAspectFit
         }
 
+        Image {
+            id: image5
+            x: 408
+            y: 33
+            width: 55
+            height: 61
+            source: "assets/bigbuttoniconarc.png"
+            fillMode: Image.PreserveAspectFit
+        }
+
         Rectangle {
-            id: rectangle3
-            x: 15
-            y: 77
-            width: 407
-            height: 5
-            opacity: 0.324
+            id: rectangle
+            x: 62
+            y: 189
+            width: 325
+            height: 37
+            opacity: 0.579
+            color: "#ffffff"
+
+            Text {
+                id: text1
+                x: 47
+                y: 11
+                color: "#000000"
+                text: qsTr("IP Adress:")
+                font.pixelSize: 12
+                font.family: "Maven Pro"
+                minimumPixelSize: 16
+                renderType: Text.QtRendering
+                textFormat: Text.PlainText
+            }
+
+            Rectangle {
+                id: rectangle1
+                x: 108
+                y: 8
+                width: 209
+                height: 21
+                color: "#ffffff"
+            }
+        }
+
+        Image {
+            id: image6
+            x: 68
+            y: 193
+            width: 38
+            height: 29
             visible: true
-            color: "#353b4f"
+            source: "assets/camera.png"
+            fillMode: Image.PreserveAspectFit
+        }
+
+        Text {
+            id: text2
+            x: 414
+            y: 100
+            width: 45
+            height: 16
+            color: "#ff0404"
+            text: qsTr("[LIVE] cam")
+            font.pixelSize: 9
+            styleColor: "#ff2222"
+            font.family: "Maven Pro"
         }
     }
 
@@ -328,17 +294,51 @@ Item {
         opacity: 1
         visible: true
 
+        Image {
+            id: image4
+            x: 117
+            y: 4
+            width: 62
+            height: 56
+            opacity: 0.2
+            source: "assets/aa.png"
+            fillMode: Image.PreserveAspectFit
+
+            Rectangle {
+                id: rectangle2
+                x: 0
+                y: -2
+                width: 62
+                height: 88
+                opacity: 0.518
+                color: "#110909"
+            }
+        }
+
         Connections {
             target: washProgramSettings
 
             onCancelClicked: {
-                washprogramScreen.canceled()
+                presetsScreen.state = "StartScreen"
             }
 
             onApplyClicked: {
                 washprogramScreen.applied()
             }
+
         }
+
+        Image {
+            id: image3
+            x: 122
+            y: 14
+            width: 53
+            height: 36
+            opacity: 0.567
+            source: "assets/camera.png"
+            fillMode: Image.PreserveAspectFit
+        }
+
     }
 
     Connections {
@@ -349,11 +349,18 @@ Item {
             washProgramGrid.activeItem = 4
         }
     }
+
+    Bigbutton {
+        id: bigbutton
+        x: 396
+        y: 21
+        opacity: 0
+    }
 }
 
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.5;height:272;width:480}D{i:22}
+    D{i:0;formeditorZoom:1.5;height:272;width:480}
 }
 ##^##*/

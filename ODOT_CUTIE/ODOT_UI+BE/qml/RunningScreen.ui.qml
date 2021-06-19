@@ -1,3 +1,5 @@
+
+
 /****************************************************************************
 **
 ** Copyright (C) 2021 The Qt Company Ltd.
@@ -47,13 +49,15 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
 import QtQuick 2.11
 
 Item {
     id: runningScreen
     width: 480
     height: 272
+    property alias image: image
+    property alias running: running
+    property alias bigbutton: bigbutton
     state: "RunScreen"
 
     signal runFinished
@@ -84,6 +88,53 @@ Item {
             onStopRun: runningScreen.state = "CancelScreen"
         }
 
+        Bigbutton {
+            id: bigbutton
+            x: 50
+            y: 107
+            presetlabelText: "Camera"
+        }
+
+        Image {
+            id: image
+            x: 55
+            y: 120
+            width: 73
+            height: 53
+            source: "assets/camera.png"
+            fillMode: Image.PreserveAspectFit
+        }
+
+        Image {
+            id: image1
+            x: 55
+            y: 112
+            width: 73
+            height: 74
+            opacity: 0.336
+            source: "assets/aa.png"
+            fillMode: Image.PreserveAspectFit
+        }
+
+        Image {
+            id: image2
+            x: 46
+            y: 100
+            width: 88
+            height: 94
+            source: "assets/drumcopy_temp.png"
+            fillMode: Image.PreserveAspectFit
+        }
+
+        Rectangle {
+            id: rectangle
+            x: 8
+            y: 8
+            width: 180
+            height: 63
+            opacity: 0.1
+            color: "#2a1a1a"
+        }
     }
 
     RunningCancelation {
@@ -140,4 +191,3 @@ Item {
         }
     ]
 }
-

@@ -55,58 +55,40 @@ Item {
     width: 480
     height: 272
 
-    signal settingsClosed
-
-    Flatbackground {
-        id: backgroundFull
-        anchors.fill: parent
-    }
-
-    Item {
-        id: closeButton
+    Rectangle {
+        id: rectangle
         x: 0
-        y: 2
+        y: 0
+        width: 350
+        height: 220
+        color: "#206c3c"
 
-        width: 40
-        height: 40
+        Text {
+            id: text1
+            x: 135
+            y: 0
+            color: "#ffffff"
+            text: qsTr("Live Camera")
+            font.pixelSize: 14
+            font.family: "Maven Pro"
+            styleColor: "#ffffff"
+        }
 
         Image {
-            width: 20
-            height: 20
-            anchors.verticalCenter: parent.verticalCenter
-            source: "assets/pauseiconon.png"
-            anchors.horizontalCenter: parent.horizontalCenter
+            id: image
+            x: 45
+            y: 18
+            width: 261
+            height: 202
+            source: "../../../../../Downloads/s4-l50_2-p51.png"
+            fillMode: Image.PreserveAspectFit
         }
-
-        MouseArea {
-            id: closeMA
-            anchors.fill: parent
-
-            Connections {
-                target: closeMA
-                onClicked: settingsClosed()
-            }
-        }
-    }
-
-    Text {
-        id: settingsLabel
-        x: 105
-        y: 7
-
-        color: "#B8B8B8"
-        text: "Settings"
-        font.pixelSize: 28
-        horizontalAlignment: Text.AlignHCenter
-        font.family: "Maven Pro"
-    }
-
-    Timedate {
-        id: settings_timedateinstance
-        x: 345
-        y: 7
-        width: 47
-        height: 30
     }
 }
 
+
+/*##^##
+Designer {
+    D{i:0;height:200;width:300}
+}
+##^##*/

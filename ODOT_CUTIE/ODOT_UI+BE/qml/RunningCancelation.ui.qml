@@ -62,37 +62,6 @@ Item {
         id: backgroundfull
         anchors.fill: parent
 
-        Rectangle {
-            id: rectangle
-            x: 183
-            y: 202
-            width: 200
-            height: 29
-            color: "#04515a"
-        }
-
-        Text {
-            id: text1
-            x: 73
-            y: 209
-            width: 83
-            height: 15
-            color: "#ffffff"
-            text: qsTr("Custom Name:")
-            font.pixelSize: 15
-            font.family: "Maven Pro"
-        }
-
-        Rectangle {
-            id: rectangle1
-            x: 65
-            y: 192
-            width: 347
-            height: 51
-            opacity: 0.202
-            color: "#6af3ff"
-        }
-
         Image {
             id: image
             x: 112

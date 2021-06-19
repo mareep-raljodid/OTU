@@ -47,7 +47,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
+import QtQuick.Layouts 1.3
 import QtQuick 2.15
 
 Item {
@@ -55,7 +55,5 @@ Item {
     width: 480
     height: 272
 
-    ApplicationFlow {
-
-    }
+    ApplicationFlow {}
 }
