@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_rosCLI_t {
     QByteArrayData data[11];
-    char stringdata0[127];
+    char stringdata0[122];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,16 +37,16 @@ QT_MOC_LITERAL(1, 7, 12), // "startSensors"
 QT_MOC_LITERAL(2, 20, 0), // ""
 QT_MOC_LITERAL(3, 21, 3), // "txt"
 QT_MOC_LITERAL(4, 25, 11), // "startRecord"
-QT_MOC_LITERAL(5, 37, 17), // "startRecord_NAMED"
-QT_MOC_LITERAL(6, 55, 10), // "stopRecord"
-QT_MOC_LITERAL(7, 66, 11), // "pauseRecord"
-QT_MOC_LITERAL(8, 78, 12), // "setIP_CAMERA"
-QT_MOC_LITERAL(9, 91, 15), // "openRecordFiles"
-QT_MOC_LITERAL(10, 107, 19) // "deleteLastRecording"
+QT_MOC_LITERAL(5, 37, 10), // "stopRecord"
+QT_MOC_LITERAL(6, 48, 11), // "pauseRecord"
+QT_MOC_LITERAL(7, 60, 12), // "resumeRecord"
+QT_MOC_LITERAL(8, 73, 12), // "setIP_CAMERA"
+QT_MOC_LITERAL(9, 86, 15), // "openRecordFiles"
+QT_MOC_LITERAL(10, 102, 19) // "deleteLastRecording"
 
     },
     "rosCLI\0startSensors\0\0txt\0startRecord\0"
-    "startRecord_NAMED\0stopRecord\0pauseRecord\0"
+    "stopRecord\0pauseRecord\0resumeRecord\0"
     "setIP_CAMERA\0openRecordFiles\0"
     "deleteLastRecording"
 };
@@ -96,9 +96,9 @@ void rosCLI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         switch (_id) {
         case 0: _t->startSensors((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 1: _t->startRecord((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 2: _t->startRecord_NAMED((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 3: _t->stopRecord((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 4: _t->pauseRecord((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 2: _t->stopRecord((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 3: _t->pauseRecord((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 4: _t->resumeRecord((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 5: _t->setIP_CAMERA((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 6: _t->openRecordFiles((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 7: _t->deleteLastRecording((*reinterpret_cast< QString(*)>(_a[1]))); break;

@@ -55,6 +55,7 @@ Item {
     id: running
     width: 480
     height: 272
+    property alias pausebuttoninstance: pausebuttoninstance
     clip: true
 
     property int runDuration: 20

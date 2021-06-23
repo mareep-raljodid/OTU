@@ -56,6 +56,7 @@ Item {
     id: quickstarts
     width: 480
     height: 272
+    property alias image: image
 
     property int runDuration: 0
     signal detailsClicked
@@ -76,6 +77,7 @@ Item {
         Connections {
             target: quickstartgo
             onClicked: {
+                ros.startRecord(textInput.text);
                 applied()
             }
         }
@@ -140,15 +142,16 @@ Item {
             opacity: 0.482
             color: "#ffffff"
 
-            TextEdit {
-                id: textEdit
+            TextInput {
+                id: textInput
+                objectName:"inputText"
                 x: 8
                 y: 5
                 width: 185
                 height: 20
                 text: qsTr("")
                 font.pixelSize: 15
-                font.family: "Maven Pro"
+                font.family: "Times New Roman"
             }
         }
 
@@ -200,6 +203,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.5}
+    D{i:0;formeditorZoom:1.25}
 }
 ##^##*/

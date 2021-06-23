@@ -110,6 +110,7 @@ Item {
         Connections {
             target: quickstartgo
             onClicked: {
+                ros.stopRecord("ROS CANCELLED");
                 accepted()
             }
         }
@@ -132,6 +133,6 @@ Item {
 
 /*##^##
 Designer {
-    D{i:0;height:272;width:480}D{i:6}
+    D{i:0;height:272;width:480}
 }
 ##^##*/
