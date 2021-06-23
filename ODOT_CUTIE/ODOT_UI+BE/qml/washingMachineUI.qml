@@ -50,6 +50,7 @@
 import QtQuick.Layouts 1.3
 import QtQuick 2.15
 
+
 Item {
     id: root
     width: 480
@@ -57,3 +58,27 @@ Item {
 
     ApplicationFlow {}
 }
+/*
+import QtQuick 2.0
+import HelloCpp 1.0
+
+Rectangle {
+width: 360
+height: 360
+
+HelloCpp {
+    id: demo
+}
+
+Text {
+    text: qsTr("Hello World")
+    anchors.centerIn: parent
+}
+MouseArea {
+    anchors.fill: parent
+    onClicked: {
+        demo.printMessage("Hello Cpp. Nice to see you");
+    }
+}
+}
+*/

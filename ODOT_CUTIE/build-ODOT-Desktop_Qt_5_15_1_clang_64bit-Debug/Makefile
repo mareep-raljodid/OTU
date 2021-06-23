@@ -52,9 +52,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../ODOT_UI+BE/main.cpp qrc_qmake_qmake_immediate.cpp
+SOURCES       = ../ODOT_UI+BE/main.cpp \
+		../ODOT_UI+BE/roscli.cpp qrc_qmake_qmake_immediate.cpp \
+		moc_roscli.cpp
 OBJECTS       = main.o \
-		qrc_qmake_qmake_immediate.o
+		roscli.o \
+		qrc_qmake_qmake_immediate.o \
+		moc_roscli.o
 DIST          = ../ODOT_UI+BE/qml/CameraView.qml \
 		../ODOT_UI+BE/qml/CameraView.ui.qml \
 		../../../../Qt/5.15.1/clang_64/mkspecs/features/spec_pre.prf \
@@ -245,7 +249,8 @@ DIST          = ../ODOT_UI+BE/qml/CameraView.qml \
 		../../../../Qt/5.15.1/clang_64/mkspecs/features/exceptions.prf \
 		../../../../Qt/5.15.1/clang_64/mkspecs/features/yacc.prf \
 		../../../../Qt/5.15.1/clang_64/mkspecs/features/lex.prf \
-		../ODOT_UI+BE/ODOT.pro  ../ODOT_UI+BE/main.cpp
+		../ODOT_UI+BE/ODOT.pro ../ODOT_UI+BE/roscli.h ../ODOT_UI+BE/main.cpp \
+		../ODOT_UI+BE/roscli.cpp
 QMAKE_TARGET  = ODOT
 DESTDIR       = 
 TARGET        = ODOT.app/Contents/MacOS/ODOT
@@ -692,7 +697,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents qmake_qmake_immediate.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../../Qt/5.15.1/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../ODOT_UI+BE/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../ODOT_UI+BE/roscli.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../ODOT_UI+BE/main.cpp ../ODOT_UI+BE/roscli.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -951,8 +957,16 @@ compiler_moc_predefs_clean:
 moc_predefs.h: ../../../../Qt/5.15.1/clang_64/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk -mmacosx-version-min=10.13 -Wall -Wextra -dM -E -o moc_predefs.h ../../../../Qt/5.15.1/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_roscli.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_roscli.cpp
+moc_roscli.cpp: ../ODOT_UI+BE/roscli.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		moc_predefs.h \
+		../../../../Qt/5.15.1/clang_64/bin/moc
+	/Users/rajdeepbandopadhyay/Qt/5.15.1/clang_64/bin/moc $(DEFINES) --include /Users/rajdeepbandopadhyay/Desktop/OTU/ODOT_CUTIE/build-ODOT-Desktop_Qt_5_15_1_clang_64bit-Debug/moc_predefs.h -I/Users/rajdeepbandopadhyay/Qt/5.15.1/clang_64/mkspecs/macx-clang -I/Users/rajdeepbandopadhyay/Desktop/OTU/ODOT_CUTIE/ODOT_UI+BE -I/Users/rajdeepbandopadhyay/Qt/5.15.1/clang_64/lib/QtQuick.framework/Headers -I/Users/rajdeepbandopadhyay/Qt/5.15.1/clang_64/lib/QtGui.framework/Headers -I/Users/rajdeepbandopadhyay/Qt/5.15.1/clang_64/lib/QtQmlModels.framework/Headers -I/Users/rajdeepbandopadhyay/Qt/5.15.1/clang_64/lib/QtQml.framework/Headers -I/Users/rajdeepbandopadhyay/Qt/5.15.1/clang_64/lib/QtNetwork.framework/Headers -I/Users/rajdeepbandopadhyay/Qt/5.15.1/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.5/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.3.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/rajdeepbandopadhyay/Qt/5.15.1/clang_64/lib ../ODOT_UI+BE/roscli.h -o moc_roscli.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -965,7 +979,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
@@ -974,11 +988,28 @@ main.o: ../ODOT_UI+BE/main.cpp ../../../../Qt/5.15.1/clang_64/lib/QtGui.framewor
 		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/QQmlApplicationEngine \
 		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/qqmlapplicationengine.h \
 		../../../../Qt/5.15.1/clang_64/lib/QtQuick.framework/Headers/QQuickView \
-		../../../../Qt/5.15.1/clang_64/lib/QtQuick.framework/Headers/qquickview.h
+		../../../../Qt/5.15.1/clang_64/lib/QtQuick.framework/Headers/qquickview.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/QQmlEngine \
+		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/qqmlengine.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/QQmlContext \
+		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/qqmlcontext.h \
+		../ODOT_UI+BE/roscli.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qobject.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../ODOT_UI+BE/main.cpp
+
+roscli.o: ../ODOT_UI+BE/roscli.cpp ../ODOT_UI+BE/roscli.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QObject \
+		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QDebug \
+		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qdebug.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o roscli.o ../ODOT_UI+BE/roscli.cpp
 
 qrc_qmake_qmake_immediate.o: qrc_qmake_qmake_immediate.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qmake_qmake_immediate.o qrc_qmake_qmake_immediate.cpp
+
+moc_roscli.o: moc_roscli.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_roscli.o moc_roscli.cpp
 
 ####### Install
 

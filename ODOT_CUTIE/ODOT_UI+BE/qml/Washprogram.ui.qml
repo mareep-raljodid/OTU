@@ -257,6 +257,17 @@ Item {
                 width: 209
                 height: 21
                 color: "#ffffff"
+
+                TextEdit {
+                    id: textEdit
+                    x: 8
+                    y: 1
+                    width: 201
+                    height: 20
+                    text: qsTr("")
+                    font.pixelSize: 12
+                    font.family: "Maven Pro"
+                }
             }
         }
 

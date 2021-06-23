@@ -122,13 +122,36 @@ Item {
         }
 
         Rectangle {
+            id: rectangle1
+            x: 8
+            y: 114
+            width: 219
+            height: 63
+            opacity: 1
+            color: "#91babf"
+        }
+
+        Rectangle {
             id: rectangle
             x: 16
             y: 141
             width: 201
             height: 29
-            color: "#04515a"
+            opacity: 0.482
+            color: "#ffffff"
+
+            TextEdit {
+                id: textEdit
+                x: 8
+                y: 5
+                width: 185
+                height: 20
+                text: qsTr("")
+                font.pixelSize: 15
+                font.family: "Maven Pro"
+            }
         }
+
 
         Text {
             id: text1
@@ -136,21 +159,12 @@ Item {
             y: 116
             width: 83
             height: 15
-            color: "#ffffff"
+            color: "#100e0e"
             text: qsTr("Custom Name:")
             font.pixelSize: 15
             font.family: "Maven Pro"
         }
 
-        Rectangle {
-            id: rectangle1
-            x: 8
-            y: 116
-            width: 219
-            height: 63
-            opacity: 0.202
-            color: "#6af3ff"
-        }
 
 
 

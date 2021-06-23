@@ -51,8 +51,14 @@
 import QtQuick 2.15
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.12
+import RosCLI 1.0
 
 Item {
+
+    RosCLI {
+        id: ros
+    }
+
     id: root
     state: "start"
 
@@ -65,6 +71,7 @@ Item {
         visible: true
 
         onStartClicked: {
+            ros.startSensors("[DBG] ROS Sensors Started");
             root.state = "presets"
         }
 
