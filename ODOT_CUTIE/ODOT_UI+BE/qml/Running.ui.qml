@@ -55,7 +55,6 @@ Item {
     id: running
     width: 480
     height: 272
-    property alias pausebuttoninstance: pausebuttoninstance
     clip: true
 
     property int runDuration: 20
@@ -65,6 +64,10 @@ Item {
     signal pauseRun
     signal stopRun
     signal runFinished
+    signal pp
+    signal resumerun
+    signal pauserun
+
 
     RunningLogic {
         id: logic
@@ -87,7 +90,7 @@ Item {
             logic.startRun()
 
             lockbuttoninstance.isLocked = true
-            pausebuttoninstance.isLocked = true
+            //pausebuttoninstance.isLocked = true
         }
 
         onRunFinished: {
@@ -226,17 +229,20 @@ Item {
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 213
-        anchors.leftMargin: 141
+        anchors.leftMargin: 69
         lockedicononSource: "assets/closeiconoff.png"
         currenticonoffSource: "assets/pauseiconon.png"
 
         Connections {
             target: stopbuttoninstance
-            onClicked: stopRun()
+            onClicked: {
+                stopRun()
+            }
             onStateChanged: if (stopbuttoninstance.state == "complete")
                                 stopRun()
         }
     }
+
 
     states: [
         State {
@@ -254,7 +260,7 @@ Item {
         },
         State {
             name: "running"
-            when: pausebuttoninstance.isLocked && !lockbuttoninstance.isLocked
+            when: /*pausebuttoninstance.isLocked && */!lockbuttoninstance.isLocked
 
             PropertyChanges {
                 target: text1
@@ -268,7 +274,7 @@ Item {
         },
         State {
             name: "paused"
-            when: !pausebuttoninstance.isLocked && !lockbuttoninstance.isLocked
+            when: /*!pausebuttoninstance.isLocked && */!lockbuttoninstance.isLocked
 
             PropertyChanges {
                 target: timeline
@@ -288,7 +294,7 @@ Item {
         },
         State {
             name: "runningLocked"
-            when: pausebuttoninstance.isLocked && lockbuttoninstance.isLocked
+            when: /*pausebuttoninstance.isLocked && */lockbuttoninstance.isLocked
             PropertyChanges {
                 target: text1
                 visible: false
@@ -299,16 +305,10 @@ Item {
                 opacity: 0.203
                 enabled: false
             }
-
-            PropertyChanges {
-                target: pausebuttoninstance
-                opacity: 0.203
-                enabled: false
-            }
         },
         State {
             name: "pausedLocked"
-            when: !pausebuttoninstance.isLocked && lockbuttoninstance.isLocked
+            when: /*!pausebuttoninstance.isLocked && */lockbuttoninstance.isLocked
             PropertyChanges {
                 target: timeline
                 enabled: false
@@ -330,12 +330,6 @@ Item {
                 opacity: 0.203
                 enabled: false
             }
-
-            PropertyChanges {
-                target: pausebuttoninstance
-                opacity: 0.203
-                enabled: false
-            }
         },
         State {
             name: "finished"
@@ -344,14 +338,9 @@ Item {
                 visible: true
                 text: qsTr("Ready!")
             }
-
-            PropertyChanges {
-                target: pausebuttoninstance
-                opacity: 0.203
-                enabled: false
-            }
         }
     ]
+
 
     Timeline {
         id: timeline
@@ -384,21 +373,6 @@ Item {
         }
     }
 
-    LockButton {
-        id: pausebuttoninstance
-        x: 79
-        y: 16
-        width: 43
-        height: 43
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 213
-        anchors.rightMargin: 358
-        unlockedicononSource: "assets/resumeiconon.png"
-        unlockediconoffSource: "assets/resumeiconoff.png"
-        lockedicononSource: "assets/pauseiconoff.png"
-        currenticonoffSource: "assets/pauseiconon_1.png"
-    }
 
 }
 

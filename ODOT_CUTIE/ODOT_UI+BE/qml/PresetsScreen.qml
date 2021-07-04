@@ -89,6 +89,9 @@ Item {
         id: quickstart
 
         visible: false
+        textInput.onTextChanged: {
+             ros.text = textInput.text;
+        }
 
         Connections {
             target: quickstart

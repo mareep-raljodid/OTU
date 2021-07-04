@@ -56,8 +56,10 @@ Item {
 
     signal startRun
     signal stopRun
-
+    signal pp
     signal runFinished
+    signal resumerun
+    signal pauserun
 
     property alias isRunning: timer.running
 
@@ -97,4 +99,13 @@ Item {
     onStopRun: {
         timer.stop()
     }
+
+    onPauserun: {
+        running.state = "paused"
+    }
+
+    onResumerun: {
+        running.state = "running"
+    }
 }
+

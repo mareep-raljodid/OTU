@@ -56,6 +56,7 @@ Item {
     id: quickstarts
     width: 480
     height: 272
+    property alias textInput: textInput
     property alias image: image
 
     property int runDuration: 0
@@ -149,9 +150,10 @@ Item {
                 y: 5
                 width: 185
                 height: 20
-                text: qsTr("")
+                text: qsTr("latest")
                 font.pixelSize: 15
                 font.family: "Times New Roman"
+                renderType: Text.QtRendering
             }
         }
 

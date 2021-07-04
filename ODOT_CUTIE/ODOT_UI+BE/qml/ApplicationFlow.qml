@@ -59,6 +59,8 @@ Item {
         id: ros
     }
 
+
+
     id: root
     state: "start"
 

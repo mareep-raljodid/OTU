@@ -6,6 +6,8 @@
 
 #include "roscli.h"
 
+
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -19,7 +21,6 @@ int main(int argc, char *argv[])
     if (!view.errors().isEmpty())
         return -1;
     view.show();
-
     app.exec();
 }
 

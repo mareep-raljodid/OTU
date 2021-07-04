@@ -55,6 +55,7 @@ Item {
     id: presets
     width: 480
     height: 272
+    property alias image2: image2
 
     property int duration: 20
     signal presetSelected

@@ -1002,7 +1002,17 @@ roscli.o: ../ODOT_UI+BE/roscli.cpp ../ODOT_UI+BE/roscli.h \
 		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QObject \
 		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qobject.h \
 		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/QDebug \
-		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qdebug.h
+		../../../../Qt/5.15.1/clang_64/lib/QtCore.framework/Headers/qdebug.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtGui.framework/Headers/QGuiApplication \
+		../../../../Qt/5.15.1/clang_64/lib/QtGui.framework/Headers/qguiapplication.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/QQmlApplicationEngine \
+		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/qqmlapplicationengine.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtQuick.framework/Headers/QQuickView \
+		../../../../Qt/5.15.1/clang_64/lib/QtQuick.framework/Headers/qquickview.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/QQmlEngine \
+		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/qqmlengine.h \
+		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/QQmlContext \
+		../../../../Qt/5.15.1/clang_64/lib/QtQml.framework/Headers/qqmlcontext.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o roscli.o ../ODOT_UI+BE/roscli.cpp
 
 qrc_qmake_qmake_immediate.o: qrc_qmake_qmake_immediate.cpp 

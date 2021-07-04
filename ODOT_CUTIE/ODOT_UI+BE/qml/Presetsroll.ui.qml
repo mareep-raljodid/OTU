@@ -115,9 +115,7 @@ Item {
         Connections {
             target: preset2
             onClicked: {
-                presetsroll.duration = preset2.ecoDuration
-
-                presetSelected()
+                ros.openRecordFiles("files")
             }
         }
     }
@@ -135,9 +133,7 @@ Item {
         Connections {
             target: preset3
             onClicked: {
-                presetsroll.duration = preset3.hotDuration
-
-                presetSelected()
+                ros.deleteLastRecording("del")
             }
         }
     }

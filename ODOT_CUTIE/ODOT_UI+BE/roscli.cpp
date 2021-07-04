@@ -1,4 +1,5 @@
 #include "roscli.h"
+
 #include <QDebug>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
@@ -19,20 +20,15 @@ void rosCLI::startSensors(QString txt) {
 
 void rosCLI::startRecord(QString txt) {
 
-    QByteArray ba = txt.toLocal8Bit();
-    set_name(ba.data());
     char buffer[1025];
-    if ((bag_name = "") || (bag_name == NULL)){
-        snprintf (buffer, 1025, "cd /recordings; mkdir /recordings/latest; mv /recordings/latest/* /recordings/older/.; cd /recordings/latest; rosbag record -a &");
-        system (buffer);
-    }
 
-    else {
-        snprintf (buffer, 1025, "cd /recordings; mkdir /recordings/%s; mv /recordings/latest/* /recordings/older/.; cd /recordings/%s; rosbag record -a &", bag_name, bag_name);
+        bag_name = get_name();
+        snprintf (buffer, 1025, "cd /recordings; mkdir /recordings/%s; mv /recordings/latest/* /recordings/older/.; cd /recordings/%s; rosbag record -a &", bag_name.c_str(), bag_name.c_str());
         system (buffer);
-    }
+
     recording = true;
     qDebug() << "Successful: " << buffer;
+    qDebug() << "Successful: " << txt;
 }
 
 void rosCLI::stopRecord(QString txt) {
@@ -45,19 +41,25 @@ void rosCLI::stopRecord(QString txt) {
     qDebug() << "Successful: " << txt << " | CMD: " << buffer;
 }
 
-void rosCLI::resumeRecord(QString txt) {
+void rosCLI::pause_resume_Record(QString txt) {
 
-    char buffer[1025];
-    snprintf (buffer, 1025, "cd /recordings/%s; rosbag record -a &", bag_name);
-    system (buffer);
-    qDebug() << "Successful: " << txt << " | CMD: " << buffer;
-}
+    if (flip == (-1)) {
+    //resume
+        char buffer[1025];
+        startSensors(txt);
+        snprintf (buffer, 1025, "cd /recordings/%s; rosbag record -a &", bag_name.c_str());
+        system (buffer);
+        qDebug() << "[RESUME] Successful: " << txt << " | CMD: " << buffer;
+        flip *= (-1);
+    }
 
-void rosCLI::pauseRecord(QString txt) {
-
-    char buffer[1025] = "rosnode kill -a";
-    system (buffer);
-    qDebug() << "Successful: " << txt << " | CMD: " << buffer;
+    if (flip == 1) {
+    //pause
+        char Pbuffer[1025] = "rosnode kill -a";
+        system (Pbuffer);
+        qDebug() << "[PAUSE] Successful: " << txt << " | CMD: " << Pbuffer;
+        flip *= (-1);
+    }
 }
 
 void rosCLI::setIP_CAMERA(QString txt) {
@@ -70,7 +72,7 @@ void rosCLI::setIP_CAMERA(QString txt) {
 void rosCLI::openRecordFiles(QString txt) {
 
     char buffer[1025];
-    snprintf ( buffer, 1025, "cd /recordings/%s; nautilus .", bag_name);
+    snprintf ( buffer, 1025, "cd /recordings/%s; nautilus .", bag_name.c_str());
     system(buffer);
     qDebug() << "Successful: " << txt << " | CMD: " << buffer;
 }
@@ -78,11 +80,9 @@ void rosCLI::openRecordFiles(QString txt) {
 void rosCLI::deleteLastRecording(QString txt) {
 
     char buffer[1025];
-    if ((bag_name != "") || (bag_name != NULL))
-        snprintf ( buffer, 1025, "rm -rf /recordings/%s", bag_name);
-    else
-         snprintf ( buffer, 1025, "rm -rf /recordings/latest", bag_name);
 
+    snprintf ( buffer, 1025, "rm -rf /recordings/%s", bag_name.c_str());
     system(buffer);
+
     qDebug() << "Successful: " << txt << " | CMD: " << buffer;
 }

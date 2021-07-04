@@ -55,6 +55,7 @@ Item {
     id: runningScreen
     width: 480
     height: 272
+    property alias rectangle: rectangle
     property alias image: image
     property alias running: running
     property alias bigbutton: bigbutton
@@ -70,6 +71,7 @@ Item {
         id: running
         x: 0
         y: 0
+
 
         runDuration: runningScreen.runDuration
         activated: runningScreen.activated
@@ -130,7 +132,7 @@ Item {
             id: rectangle
             x: 8
             y: 8
-            width: 180
+            width: 126
             height: 63
             opacity: 0.1
             color: "#2a1a1a"
