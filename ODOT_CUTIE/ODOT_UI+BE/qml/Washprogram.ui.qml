@@ -105,32 +105,13 @@ Item {
             x: 62
             y: 33
             width: 101
-            height: 141
+            height: 73
             opacity: 0.202
             visible: true
             color: "#b9ca70"
 
 
-            Rectangle {
-                id: rectangle8
-                x: 116
-                y: 72
-                width: 93
-                height: 61
-                visible: true
-                color: "#ffffff"
-            }
 
-
-            Rectangle {
-                id: rectangle7
-                x: 10
-                y: 72
-                width: 83
-                height: 61
-                visible: true
-                color: "#ffffff"
-            }
 
 
         }
@@ -160,7 +141,7 @@ Item {
             x: 169
             y: 33
             width: 108
-            height: 141
+            height: 73
             opacity: 0.202
             visible: true
             color: "#b9ca70"
@@ -171,20 +152,10 @@ Item {
             x: 283
             y: 33
             width: 104
-            height: 141
+            height: 73
             opacity: 0.202
             visible: true
             color: "#b9ca70"
-
-            Rectangle {
-                id: rectangle9
-                x: 8
-                y: 72
-                width: 88
-                height: 61
-                visible: true
-                color: "#ffffff"
-            }
         }
 
         BorderImage {
@@ -258,15 +229,16 @@ Item {
                 height: 21
                 color: "#ffffff"
 
-                TextEdit {
-                    id: textEdit
+                TextInput {
+                    id: textinp
                     x: 8
                     y: 1
                     width: 201
                     height: 20
-                    text: qsTr("")
+                    text: ros.cam_ip
                     font.pixelSize: 12
-                    font.family: "Maven Pro"
+                    font.family: "Times New Roman"
+                    renderType: Text.QtRendering
                 }
             }
         }
@@ -293,6 +265,51 @@ Item {
             font.pixelSize: 9
             styleColor: "#ff2222"
             font.family: "Maven Pro"
+        }
+
+        Text {
+            id: text3
+            x: 62
+            y: 119
+            color: "#ffffff"
+            text: qsTr("CAMERA:")
+            font.pixelSize: 12
+        }
+
+        Text {
+            id: text4
+            x: 169
+            y: 119
+            width: 25
+            height: 15
+            color: "#ffffff"
+            text: qsTr("LIDAR:")
+            font.pixelSize: 12
+        }
+
+        Text {
+            id: text5
+            x: 283
+            y: 119
+            color: "#ffffff"
+            text: qsTr("GPS:")
+            font.pixelSize: 12
+        }
+
+        Text {
+            id: text6
+            x: 121
+            y: 119
+            text: ros.cam
+            font.pixelSize: 12
+        }
+
+        Text {
+            id: text7
+            x: 212
+            y: 119
+            text: ros.lidar
+            font.pixelSize: 12
         }
     }
 
@@ -331,6 +348,7 @@ Item {
 
             onCancelClicked: {
                 presetsScreen.state = "StartScreen"
+                ros.setIP(textinp.text)
             }
 
             onApplyClicked: {
@@ -348,6 +366,14 @@ Item {
             opacity: 0.567
             source: "assets/camera.png"
             fillMode: Image.PreserveAspectFit
+        }
+
+        Text {
+            id: text8
+            x: 28
+            y: 87
+            text: ros.gps
+            font.pixelSize: 12
         }
 
     }

@@ -73,7 +73,7 @@ Item {
             id: rectangle
             x: 95
             y: 8
-            width: 324
+            width: 332
             height: 79
             color: "#d4fbf3"
 
@@ -99,6 +99,14 @@ Item {
                 text: qsTr("Current Sensors' Status: ")
                 font.pixelSize: 14
                 font.family: "Maven Pro"
+
+                Text {
+                    id: text6
+                    x: 178
+                    y: 0
+                    text: ros.curr_sens
+                    font.pixelSize: 12
+                }
             }
 
             Text {
@@ -111,6 +119,22 @@ Item {
                 text: qsTr("Last Bag Location:")
                 font.pixelSize: 14
                 font.family: "Maven Pro"
+            }
+
+            Text {
+                id: text5
+                x: 184
+                y: 8
+                text: ros.last_bag_date
+                font.pixelSize: 12
+            }
+
+            Text {
+                id: text7
+                x: 187
+                y: 50
+                text: ros.last_bag_loc
+                font.pixelSize: 12
             }
         }
 

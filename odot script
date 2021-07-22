@@ -1,0 +1,11 @@
+sudo apt-get install build-essential libgl1-mesa-dev
+sudo apt-get build-dep qt5-default
+sudo apt-get install libxcb-xinerama0-dev 
+sudo apt-get install build-essential perl python git
+sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
+sudo apt-get install libasound2-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev libgstreamer-plugins-bad1.0-dev
+git clone git://code.qt.io/qt/qt5.git
+git clone https://code.qt.io/qt/qt5.git
+cd qt5
+git checkout 5.12
+git submodule update --init --recursive   

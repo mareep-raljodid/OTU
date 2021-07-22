@@ -99,6 +99,7 @@ Item {
         Connections {
             target: washSettingsCancel
             onClicked: {
+                //ros.setIP(textinp.text);
                 washprogramsettings.cancelClicked()
             }
         }
