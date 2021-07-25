@@ -11,29 +11,40 @@
 #include <streambuf>
 #include <chrono>
 
-#include <cstdio>
 #include <iostream>
-#include <memory>
 #include <stdexcept>
+#include <stdio.h>
 #include <string>
-#include <array>
 
 std::string exec(const char* cmd) {
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) {
-        throw std::runtime_error("popen() failed!");
+    char buffer[128];
+    std::string result = "";
+    FILE* pipe = popen(cmd, "r");
+    if (!pipe) throw std::runtime_error("popen() failed!");
+    try {
+        while (fgets(buffer, sizeof buffer, pipe) != NULL) {
+            result += buffer;
+        }
+    } catch (...) {
+        pclose(pipe);
+        throw;
     }
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-        result += buffer.data();
-    }
+    pclose(pipe);
     return result;
 }
 
+bool check_node(char* nodename) {
+    char buffer[1000];
+    snprintf(buffer, 1000, "ping -c 4 %s", nodename);
+    std::string output = exec(buffer);
+    if (output.find("ERROR") != std::string::npos) {
+        return false;
+    }
+    return true;
+}
 /*cam, lidar, gps, cam_ip, last_bag_date, curr_sens, last_bag_loc;*/
 void rosCLI::init() {
-    system ("mkdir recordings; mkdir config");
+    system ("mkdir recordings; mkdir config ");
     //cam read from file
     std::ifstream camIp_str("config/cam_ip.odot");
     std::string cam_ip_buf((std::istreambuf_iterator<char>(camIp_str)),
@@ -60,9 +71,9 @@ void rosCLI::init() {
     last_bag_date = lbd.c_str();
 
     // #FIXME DO ROS CHECK
-    bool stat_cam = true;
-    bool stat_lidar = true;
-    bool stat_gps = true;
+    bool stat_cam = check_node("cam");
+    bool stat_lidar = check_node("lidar");
+    bool stat_gps = check_node("gps");
 
     if(stat_cam) cam = "Valid";
     else cam = "invalid";

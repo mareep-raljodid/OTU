@@ -303,6 +303,7 @@ Item {
             text: ros.cam
             font.pixelSize: 12
         }
+        //Live Camera
 
         Text {
             id: text7

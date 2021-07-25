@@ -49,11 +49,14 @@
 ****************************************************************************/
 
 import QtQuick 2.11
+import QtMultimedia 5.15
+
 
 Item {
     id: settingsScreen
     width: 480
     height: 272
+
 
     Rectangle {
         id: rectangle
@@ -74,7 +77,7 @@ Item {
             styleColor: "#ffffff"
         }
 
-        Image {
+       /* Image {
             id: image
             x: 45
             y: 18
@@ -82,7 +85,19 @@ Item {
             height: 202
             source: "../../../../../Downloads/s4-l50_2-p51.png"
             fillMode: Image.PreserveAspectFit
-        }
+        }*/
+
+        MediaPlayer {
+                id: player
+                source: ros.cam_ip
+                autoPlay: true
+            }
+
+            VideoOutput {
+                id: videoOutput
+                source: player
+                anchors.fill: parent
+            }
     }
 }
 
